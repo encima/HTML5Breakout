@@ -1,0 +1,33 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  min-height: 100%;
+  max-width: 100%;
+  background: #111;
+  font-family: Lato, sans-serif;
+  color: #fff;
+  text-align: center;
+}
+
+canvas {
+  position: relative;
+  max-width: 100%;
+  border: 2px solid black;
+  max-height: 100%;
+  display: block;
+  margin: 0 auto;
+}
+
+.content {
+  color: #ccc;
+  text-align: center;
+  padding: 0 20px;
+}
