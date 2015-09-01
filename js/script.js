@@ -102,7 +102,7 @@
 // PADDLE functions - Attributes like width and speed as well as functions to move based on keys
 	var Paddle = function() {
 		this.height = 10;
-		this.width = 60;
+		this.width = 100;
 		this.x = Game.canvas.width/2 - this.width/2;
 		this.y = Game.canvas.height - this.height;
 		this.speed = 5;
@@ -172,6 +172,7 @@
 		this.x += this.deltaX;
         this.y += this.deltaY;
 		//Check to see if any blocks have been hit
+		var blockHit = false;
 		for(var i  = 0; i < Game.blocks.length; i++) {
 			var block = Game.blocks[i];
 				if(block.hit === false) {
@@ -179,7 +180,8 @@
 						if(this.y >= block.y && this.y <= block.y + block.height) {
 							block.hit = true;
 							Game.score += block.score;
-							this.y = 2 * (this.radius) - this.y;
+							Game.paddle.width--;
+							blockHit = true;
 							this.updateSpeed();
 						}	
 					}
@@ -194,22 +196,25 @@
 			this.deltaX = -this.deltaX;
 			this.x = 2 * (Game.canvas.width - this.radius) - this.x;
 		}
-		if (this.y < this.radius) {
+		if (this.y < this.radius || blockHit) {
 		// TOP
-			this.deltaY = -this.deltaY;
+		// Stop ball yo yo ing when it hits the top, ensure it keeps coming back down
+			if(this.deltaY < 0)
+				this.deltaY = -this.deltaY;
 			this.y = 2 * (this.radius) - this.y;
+			console.log(this.deltaY);
 		} else if (this.y > Game.canvas.height - this.radius) {
 		// BOTTOM
 			if(this.x >= Game.paddle.x - 10 && this.x <= Game.paddle.x + Game.paddle.width/2) {
-				//LEFT SIDE OF PADDLE
+				//LEFT SIDE OF paddle
 				this.deltaX = -this.deltaX;
-				this.x = 2 * (Game.canvas.width - this.radius) - this.x;
+				this.x = 2 * (this.radius) - this.x;
 				this.deltaY = -this.deltaY;
 				this.y = 2 * (Game.canvas.height - this.radius) - this.y;
 			} else if(this.x <= Game.paddle.x + Game.paddle.width + 10 && this.x >= Game.paddle.x + Game.paddle.width/2) {
 				//RIGHT SIDE OF PADDLE
 				this.deltaX = -this.deltaX;
-				this.x = 2 * (this.radius) - this.x;
+				this.x = 2 * (Game.canvas.width - this.radius) - this.x;
 				this.deltaY = -this.deltaY;
 				this.y = 2 * (Game.canvas.height - this.radius) - this.y;
 			} else {
