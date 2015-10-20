@@ -6,12 +6,14 @@
     var Game = {
         init: function () {
             var block,
-                i;
+                i,
+                img = new Image();
+            img.src = 'img/log.png';
             this.canvas = document.getElementById("game");
             this.ctx = this.canvas.getContext("2d");
-            this.noBlocks = 51;
+            this.noBlocks = 151;
             this.blocks = [];
-            this.paddle = new Paddle();
+            this.paddle = new Paddle(img);
             this.ball = new Ball();
             this.playing = false;
             this.winStatus = 'playing';
@@ -75,8 +77,9 @@
             // REDRAW all game objects (Paddle and Ball)
             Game.paddle.draw();
             Game.paddle.update();
-
+            //draw here
             Game.ball.draw();
+            //update here
             Game.ball.update();
 
             Game.message("Score: " + Game.score, 0, Game.canvas.height - 20);
@@ -111,9 +114,10 @@
     };
 
     // PADDLE functions - Attributes like width and speed as well as functions to move based on keys
-    var Paddle = function () {
+    var Paddle = function (img) {
         this.height = 10;
         this.width = 100;
+        this.sprite = img;
         this.x = Game.canvas.width / 2 - this.width / 2;
         this.y = Game.canvas.height - this.height;
         this.speed = 5;
@@ -123,8 +127,7 @@
     };
 
     Paddle.prototype.draw = function () {
-        Game.ctx.fillStyle = this.colour;
-        Game.ctx.fillRect(this.x, this.y, this.width, this.height);
+        Game.ctx.drawImage(this.sprite, this.x, this.y, this.width, this.height);
     };
 
     Paddle.prototype.update = function () {
@@ -216,6 +219,8 @@
         }
         if (this.y < this.radius || blockHit) {
             // TOP
+            //set i to 1
+            var i = 1;
             // Stop ball yo yo ing when it hits the top, ensure it keeps coming back down
             if (this.deltaY < 0) {
                 this.deltaY = -this.deltaY;
